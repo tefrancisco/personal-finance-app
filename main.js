@@ -9,11 +9,11 @@ class Despesa {
 
     constructor(ano, mes, dia, tipo, descricao, valor) {
         this.ano = ano,
-        this.mes = mes,
-        this.dia = dia
+            this.mes = mes,
+            this.dia = dia
         this.tipo = tipo,
-        this.descricao = descricao,
-        this.valor = valor
+            this.descricao = descricao,
+            this.valor = valor
     }
 
     validarDados() {
@@ -61,7 +61,7 @@ class Bd {
         for (let i = 1; i <= id; i++) {
 
             let despesa = JSON.parse(localStorage.getItem(i))
-            if(despesa === null) {
+            if (despesa === null) {
                 continue
             }
             despesa.id = i
@@ -76,35 +76,35 @@ class Bd {
         console.log(despesasFiltradas)
 
         // ano
-        if(despesa.ano !== ""){
+        if (despesa.ano !== "") {
             despesasFiltradas = despesasFiltradas.filter(d => d.ano == despesa.ano)
         }
 
         // mes
-        if(despesa.mes !== ""){
+        if (despesa.mes !== "") {
             despesasFiltradas = despesasFiltradas.filter(d => d.mes == despesa.mes)
         }
 
         // dia 
-        if(despesa.dia !== ""){
+        if (despesa.dia !== "") {
             despesasFiltradas = despesasFiltradas.filter(d => d.dia == despesa.dia)
         }
 
 
         // tipo
-        if(despesa.tipo !== ""){
+        if (despesa.tipo !== "") {
             despesasFiltradas = despesasFiltradas.filter(d => d.tipo == despesa.tipo)
         }
 
         // descricao
-        if(despesa.descricao !== ""){
+        if (despesa.descricao !== "") {
             despesasFiltradas = despesasFiltradas.filter(d => d.descricao == despesa.descricao)
-        } 
+        }
 
         //valor
-        if(despesa.valor !== ""){
+        if (despesa.valor !== "") {
             despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor)
-        } 
+        }
 
         return despesasFiltradas
     }
@@ -140,9 +140,9 @@ function cadastrarDespesa() {
             btn.className = 'btn btn-danger'
             btn.innerText = "Voltar e corrigir"
         }
-        
+
     }
-    
+
 
     let despesa = new Despesa(
 
@@ -176,10 +176,12 @@ function cadastrarDespesa() {
 
 }
 
+const divBtn = document.getElementById('div-btn')
+
 // se o array for vazio e não for uma requisição de filtragem, retorna todos
 function carregaListaDespesas(despesas = Array(), filtro = false) {
-    
-    if(despesas.length == 0 && filtro == false) {
+
+    if (despesas.length == 0 && filtro == false) {
         bd.recuperarTodosRegistros(despesas)
     }
 
@@ -187,26 +189,26 @@ function carregaListaDespesas(despesas = Array(), filtro = false) {
     table.innerHTML = ""
 
     despesas.forEach((d) => {
-        
+
         let row = table.insertRow()
-        row.insertCell(0).innerHTML = `${d.dia}/0${d.mes}/${d.ano} `
-        switch(parseInt(d.tipo)) {
-                case 1: 
+        row.insertCell(0).innerHTML = `${d.dia}/${d.mes}/${d.ano} `
+        switch (parseInt(d.tipo)) {
+            case 1:
                 row.insertCell(1).innerHTML = "Alimentação"
                 break;
-                case 2: 
+            case 2:
                 row.insertCell(1).innerHTML = "Educação"
                 break;
-                case 3: 
+            case 3:
                 row.insertCell(1).innerHTML = "Lazer"
                 break;
-                case 4: 
+            case 4:
                 row.insertCell(1).innerHTML = "Saúde"
                 break;
-                case 5:
+            case 5:
                 row.insertCell(1).innerHTML = "Transporte"
                 break;
-            }
+        }
         row.insertCell(2).innerHTML = d.descricao
         row.insertCell(3).innerHTML = `R$${d.valor}`
 
@@ -221,6 +223,46 @@ function carregaListaDespesas(despesas = Array(), filtro = false) {
             window.location.reload()
         })
         row.insertCell(4).append(btn)
+        const btn2 = document.createElement('button')
+        btn2.className = "btn btn-primary"
+        btn2.innerHTML = '<i class="fas fa-pencil-alt"></i>'
+        btn2.id = d.id
+        btn2.onclick = (() => {
+
+            inputAno.value = d.ano
+            inputMes.value = d.mes
+            inputDia.value = d.dia
+            inputTipo.value = d.tipo
+            inputDescricao.value = d.descricao
+            inputValor.value = d.valor
+
+            // verifica se o botão já existe
+            let btnEdit = document.getElementById('btn-editar-unico')
+
+            // se não existe, cria um
+            if (!btnEdit) {
+                btnEdit = document.createElement('button')
+                btnEdit.id = 'btn-editar-unico' 
+                btnEdit.className = "btn btn-primary mx-3"
+                btnEdit.innerHTML = 'Editar'
+                divBtn.appendChild(btnEdit)
+            }
+
+            btnEdit.onclick = (() => {
+
+                d.ano = inputAno.value 
+                d.mes = inputMes.value 
+                d.dia = inputDia.value 
+                d.tipo = inputTipo.value 
+                d.descricao = inputDescricao.value 
+                d.valor = inputValor.value 
+
+                localStorage.setItem(d.id, JSON.stringify(d))
+
+                window.location.reload()
+            })
+        })
+        row.insertCell(5).append(btn2)
     })
 }
 
@@ -232,7 +274,7 @@ function pesquisarDespesa() {
     let descricao = document.getElementById('descricao').value
     let valor = document.getElementById('valor').value
 
-    let despesa = new Despesa (ano, mes, dia, tipo, descricao, valor)
+    let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor)
 
     let despesas = bd.pesquisar(despesa)
 
