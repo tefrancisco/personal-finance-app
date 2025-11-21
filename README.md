@@ -11,6 +11,7 @@ Uma aplicação web simples e intuitiva para gerenciar suas finanças pessoais, 
 
 * **Registro de Despesas:** Adicione novas despesas informando **Ano, Mês, Dia, Tipo, Descrição** e **Valor**.
 * **Consulta e Filtro:** Visualize todas as despesas registradas e use filtros por **Ano, Mês, Dia, Tipo, Descrição** ou **Valor** para encontrar exatamente o que você precisa.
+* **Edição e Exclusão:** Edite ou exclua despesas registradas.
 * **Interface Amigável:** Design limpo e direto ao ponto, facilitando o uso diário.
 * **Armazenamento Local:** Usa **localStorage** ou um sistema de persistência similar para salvar os dados (adapte esta descrição se estiver usando um backend).
 
