@@ -116,33 +116,48 @@ class Bd {
 
 let bd = new Bd()
 
-function cadastrarDespesa() {
+function modularModal(par) {
 
-    function modularModal(par) {
+    const header = document.getElementById('m-header')
+    const title = document.getElementById('m-title')
+    const body = document.getElementById('m-body')
+    const btn = document.getElementById('m-btn')
 
-        const header = document.getElementById('m-header')
-        const title = document.getElementById('m-title')
-        const body = document.getElementById('m-body')
-        const btn = document.getElementById('m-btn')
-
-        if (par == true) {
-            header.className = 'modal-header text-success'
-            title.innerText = "Operação realizada com sucesso!"
-            body.innerText = "Os dados da despesa foram cadastrados com êxito."
-            btn.className = 'btn btn-success'
-            btn.innerText = "Voltar"
-        }
-
-        else {
-            header.className = 'modal-header text-danger'
-            title.innerText = "Erro na gravação!"
-            body.innerText = "Todos os campos devem ser preenchidos com dados válidos."
-            btn.className = 'btn btn-danger'
-            btn.innerText = "Voltar e corrigir"
-        }
-
+    if (par == "ins") {
+        header.className = 'modal-header text-success'
+        title.innerText = "Registro de despesa realizado com sucesso!"
+        body.innerText = "Os dados da despesa foram cadastrados com êxito."
+        btn.className = 'btn btn-success'
+        btn.innerText = "Voltar"
     }
 
+    else if (par == "err-ins") {
+        header.className = 'modal-header text-danger'
+        title.innerText = "Erro no registro da despesa!"
+        body.innerText = "Todos os campos devem ser preenchidos com dados válidos."
+        btn.className = 'btn btn-danger'
+        btn.innerText = "Voltar e corrigir"
+    }
+
+    else if (par == "del") {
+        header.className = 'modal-header text-success'
+        title.innerText = "Exclusão da despesa realizada com sucesso!"
+        body.innerText = "Os dados da despesa foram deletados da base de dados com êxito."
+        btn.className = 'btn btn-success'
+        btn.innerText = "Voltar"
+    }
+
+    else if (par == "edit") {
+        header.className = 'modal-header text-primary'
+        title.innerText = "Despesa editada com sucesso!"
+        body.innerText = "Os dados da despesa foram atualizados na base de dados com êxito."
+        btn.className = 'btn btn-primary'
+        btn.innerText = "Voltar"
+    }
+
+}
+
+function cadastrarDespesa() {
 
     let despesa = new Despesa(
 
@@ -157,7 +172,7 @@ function cadastrarDespesa() {
     if (despesa.validarDados()) {
         bd.gravarDespesa(despesa)
         // ativa o modal usando JQuery
-        modularModal(true)
+        modularModal("ins")
         $('#modalRegistroDespesas').modal('show')
 
         inputAno.value = ""
@@ -170,7 +185,7 @@ function cadastrarDespesa() {
     else {
         // ativa o modal usando JQuery
         console.error("Erro!")
-        modularModal()
+        modularModal("err-ins")
         $('#modalRegistroDespesas').modal('show')
     }
 
@@ -220,7 +235,8 @@ function carregaListaDespesas(despesas = Array(), filtro = false) {
         btn.onclick = (() => {
             //console.log(btn.id)
             bd.remover(btn.id)
-            window.location.reload()
+            modularModal("del")
+            $('#modalRegistroDespesas').modal('show')
         })
         row.insertCell(4).append(btn)
         const btn2 = document.createElement('button')
@@ -242,7 +258,7 @@ function carregaListaDespesas(despesas = Array(), filtro = false) {
             // se não existe, cria um
             if (!btnEdit) {
                 btnEdit = document.createElement('button')
-                btnEdit.id = 'btn-editar-unico' 
+                btnEdit.id = 'btn-editar-unico'
                 btnEdit.className = "btn btn-primary mx-3"
                 btnEdit.innerHTML = 'Editar'
                 divBtn.appendChild(btnEdit)
@@ -250,16 +266,16 @@ function carregaListaDespesas(despesas = Array(), filtro = false) {
 
             btnEdit.onclick = (() => {
 
-                d.ano = inputAno.value 
-                d.mes = inputMes.value 
-                d.dia = inputDia.value 
-                d.tipo = inputTipo.value 
-                d.descricao = inputDescricao.value 
-                d.valor = inputValor.value 
+                d.ano = inputAno.value
+                d.mes = inputMes.value
+                d.dia = inputDia.value
+                d.tipo = inputTipo.value
+                d.descricao = inputDescricao.value
+                d.valor = inputValor.value
 
                 localStorage.setItem(d.id, JSON.stringify(d))
-
-                window.location.reload()
+                modularModal("edit")
+                $('#modalRegistroDespesas').modal('show')
             })
         })
         row.insertCell(5).append(btn2)
@@ -279,6 +295,10 @@ function pesquisarDespesa() {
     let despesas = bd.pesquisar(despesa)
 
     carregaListaDespesas(despesas, true)
+}
+
+function refreshPage() {
+    window.location.reload()
 }
 
 
