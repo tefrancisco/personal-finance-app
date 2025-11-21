@@ -1,6 +1,6 @@
 # 💰 Orçamento Pessoal
 
-<img src="logo.png">
+<img src="icon.png">
 
 Uma aplicação web simples e intuitiva para gerenciar suas finanças pessoais, permitindo o registro e a consulta detalhada de suas despesas. Mantenha o controle do seu dinheiro de forma eficaz!
 
