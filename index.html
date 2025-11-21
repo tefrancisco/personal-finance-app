@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <title>Orçamento pessoal</title>
+  <link rel="icon" href="icon.png" type="image/png">   
 
   <!-- Bootstrap início -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -27,10 +28,10 @@
 <body>
 
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success mb-5">
     <div class="container">
       <a class="navbar-brand" href="#">
-        <img src="logo.png" width="50" height="35" alt="Orçamento pessoal">
+        <img src="icon.png" width="50" height="50" alt="Orçamento pessoal">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,7 +63,7 @@
       <div class="col-md-2">
         <select class="form-control" id="ano">
           <option value="">Ano</option>
-          <option value="2018">2018</option>
+          <option value="2025">2025</option>
         </select>
       </div>
 
@@ -106,18 +107,18 @@
       </div>
 
       <div class="col-md-2">
-        <input type="text" class="form-control" placeholder="Valor" id="valor" />
+        <input type="number" step="0.01" class="form-control" placeholder="Valor" id="valor" />
       </div>
 
       <div class="col-md-2 d-flex justify-content-end">
-        <button type="button" class="btn btn-primary" onclick="cadastrarDespesa()">
+        <button type="button" class="btn btn-success" onclick="cadastrarDespesa()">
           <i class="fas fa-plus"></i>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Model de erro de gravação -->
+  <!-- Model-->
   <div class="modal fade" id="modalRegistroDespesas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">

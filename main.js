@@ -140,7 +140,7 @@ function cadastrarDespesa() {
             btn.className = 'btn btn-danger'
             btn.innerText = "Voltar e corrigir"
         }
-
+        
     }
     
 
@@ -208,7 +208,7 @@ function carregaListaDespesas(despesas = Array(), filtro = false) {
                 break;
             }
         row.insertCell(2).innerHTML = d.descricao
-        row.insertCell(3).innerHTML = d.valor
+        row.insertCell(3).innerHTML = `R$${d.valor}`
 
         // criando o botão de exclusão
         const btn = document.createElement('button')
