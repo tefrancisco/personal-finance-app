@@ -115,6 +115,13 @@ function cadastrarDespesa() {
         // ativa o modal usando JQuery
         modularModal(true)
         $('#modalRegistroDespesas').modal('show')
+
+        inputAno.value = ""
+        inputMes.value = ""
+        inputDia.value = ""
+        inputTipo.value = ""
+        inputDescricao.value = ""
+        inputValor.value = ""
     }
     else {
         // ativa o modal usando JQuery
