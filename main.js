@@ -1,0 +1,163 @@
+const inputAno = window.document.getElementById('ano')
+const inputMes = window.document.getElementById('mes')
+const inputDia = window.document.getElementById('dia')
+const inputTipo = window.document.getElementById('tipo')
+const inputDescricao = window.document.getElementById('descricao')
+const inputValor = window.document.getElementById('valor')
+
+class Despesa {
+
+    constructor(ano, mes, dia, tipo, descricao, valor) {
+        this.ano = ano,
+        this.mes = mes,
+        this.dia = dia
+        this.tipo = tipo,
+        this.descricao = descricao,
+        this.valor = valor
+    }
+
+    validarDados() {
+        // this representa o objeto despesa criado
+        // i indica o index do elemento
+        for (let i in this) {
+            if (this[i] == undefined || this[i] == "" || this[i] == null) {
+                return false
+            }
+            else {
+                return true
+            }
+        }
+    }
+
+}
+
+class Bd {
+
+    constructor() {
+        let id = localStorage.getItem('id')
+
+        if (id === null) {
+            localStorage.setItem('id', 0)
+        }
+    }
+
+    getProximoId() {
+        let proximoId = localStorage.getItem('id')
+        return parseInt(proximoId) + 1
+    }
+
+    gravarDespesa(d) {
+        let id = this.getProximoId()
+        localStorage.setItem(id, JSON.stringify(d))
+        localStorage.setItem('id', id)
+    }
+
+    recuperarTodosRegistros(arr) {
+
+
+        let id = localStorage.getItem('id')
+
+        // recupera todas as despesas pelo for
+        for (let i = 1; i <= id; i++) {
+
+            let despesa = JSON.parse(localStorage.getItem(i))
+            if(despesa === null) {
+                continue
+            }
+            arr.push(despesa)
+        }
+
+    }
+}
+
+let bd = new Bd()
+
+function cadastrarDespesa() {
+
+    function modularModal(par) {
+
+        const header = document.getElementById('m-header')
+        const title = document.getElementById('m-title')
+        const body = document.getElementById('m-body')
+        const btn = document.getElementById('m-btn')
+
+        if (par == true) {
+            header.className = 'modal-header text-success'
+            title.innerText = "Operação realizada com sucesso!"
+            body.innerText = "Os dados da despesa foram cadastrados com êxito."
+            btn.className = 'btn btn-success'
+            btn.innerText = "Voltar"
+        }
+
+        else {
+            header.className = 'modal-header text-danger'
+            title.innerText = "Erro na gravação!"
+            body.innerText = "Todos os campos devem ser preenchidos com dados válidos."
+            btn.className = 'btn btn-danger'
+            btn.innerText = "Voltar e corrigir"
+        }
+
+    }
+    
+
+    let despesa = new Despesa(
+
+        inputAno.value,
+        inputMes.value,
+        inputDia.value,
+        inputTipo.value,
+        inputDescricao.value,
+        inputValor.value
+    )
+
+    if (despesa.validarDados()) {
+        bd.gravarDespesa(despesa)
+        // ativa o modal usando JQuery
+        modularModal(true)
+        $('#modalRegistroDespesas').modal('show')
+    }
+    else {
+        // ativa o modal usando JQuery
+        console.error("Erro!")
+        modularModal()
+        $('#modalRegistroDespesas').modal('show')
+    }
+
+}
+
+function carregaListaDespesas() {
+    
+    let despesas = Array()
+    bd.recuperarTodosRegistros(despesas)
+
+    const table = document.getElementById('table')
+
+    despesas.forEach((d) => {
+        
+        console.log(d)
+        let row = table.insertRow()
+        row.insertCell(0).innerHTML = `${d.dia}/0${d.mes}/${d.ano} `
+        switch(parseInt(d.tipo)) {
+                case 1: 
+                row.insertCell(1).innerHTML = "Alimentação"
+                break;
+                case 2: 
+                row.insertCell(1).innerHTML = "Educação"
+                break;
+                case 3: 
+                row.insertCell(1).innerHTML = "Lazer"
+                break;
+                case 4: 
+                row.insertCell(1).innerHTML = "Saúde"
+                break;
+                case 5:
+                row.insertCell(1).innerHTML = "Transporte"
+                break;
+            }
+        row.insertCell(2).innerHTML = d.descricao
+        row.insertCell(3).innerHTML = d.valor
+    })
+}
+
+
+
