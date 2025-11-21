@@ -105,7 +105,7 @@ class Bd {
             despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor)
         } 
 
-        console.log(despesasFiltradas)
+        return despesasFiltradas
     }
 }
 
@@ -214,7 +214,36 @@ function pesquisarDespesa() {
 
     let despesa = new Despesa (ano, mes, dia, tipo, descricao, valor)
 
-    bd.pesquisar(despesa)
+    let despesas = bd.pesquisar(despesa)
+
+    const table = document.getElementById('table')
+    // removendo os elementos anteriores da tabela
+    table.innerHTML = ""
+
+    despesas.forEach((d) => {
+        
+        let row = table.insertRow()
+        row.insertCell(0).innerHTML = `${d.dia}/0${d.mes}/${d.ano} `
+        switch(parseInt(d.tipo)) {
+                case 1: 
+                row.insertCell(1).innerHTML = "Alimentação"
+                break;
+                case 2: 
+                row.insertCell(1).innerHTML = "Educação"
+                break;
+                case 3: 
+                row.insertCell(1).innerHTML = "Lazer"
+                break;
+                case 4: 
+                row.insertCell(1).innerHTML = "Saúde"
+                break;
+                case 5:
+                row.insertCell(1).innerHTML = "Transporte"
+                break;
+            }
+        row.insertCell(2).innerHTML = d.descricao
+        row.insertCell(3).innerHTML = d.valor
+    })
 }
 
 
